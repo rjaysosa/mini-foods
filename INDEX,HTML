@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mini Food Ordering System</title>
+
+  <link rel="stylesheet" href="./css/style.css">
+
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    
+</head> 
+
+<body>
+
+<div id="root"></div>
+
+<script type="text/babel" src="./js/data/menu.js"></script>
+
+<script type="text/babel" src="./js/services/auth.js"></script>
+
+<script type="text/babel" src="./js/utils/cart.js"></script>
+
+<script type="text/babel" src="./js/pages/Splash.js"></script>
+<script type="text/babel" src="./js/pages/Login.js"></script>
+<script type="text/babel" src="./js/pages/Register.js"></script>
+<script type="text/babel" src="./js/pages/Sidebar.js"></script>
+<script type="text/babel" src="./js/pages/Menu.js"></script>
+<script type="text/babel" src="./js/pages/Cart.js"></script>
+<script type="text/babel" src="./js/pages/Orders.js"></script>
+<script type="text/babel" src="./js/pages/Profile.js"></script>
+
+
+<script type="text/babel" src="./js/App.js"></script>>
+
+<script type="text/babel">
+
+
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+
+</body>
+</html>
