@@ -1,0 +1,104 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background: #2c2f33;
+  color: white;
+  padding: 20px;
+  height: 100vh;
+}
+
+.sidebar h2 {
+  margin: 0;
+}
+
+.sidebar nav a {
+  display: block;
+  color: #ccc;
+  margin: 10px 0;
+  text-decoration: none;
+}
+
+.sidebar nav a:hover {
+  color: orange;
+}
+
+/* Main */
+.main {
+  flex: 1;
+  padding: 40px;
+  background: #f5f5f5;
+}
+
+/* Pages */
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+/* Forms */
+.form-box {
+  width: 300px;
+  margin: auto;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.form-box input {
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+}
+
+.form-box button {
+  width: 100%;
+  padding: 10px;
+  background: orange;
+  border: none;
+  color: white;
+}
+
+/* Hero */
+.hero {
+  display: flex;
+  gap: 20px;
+}
+
+.card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+/* Menu */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.food {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.food button {
+  background: orange;
+  border: none;
+  padding: 10px;
+  color: white;
+}
