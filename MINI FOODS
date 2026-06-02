@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mini Food Ordering System</title>
+
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #f4f4f4;
+    }
+
+    .center {
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      height:100vh;
+      flex-direction:column;
+    }
+
+    .btn {
+      background:#ff6a00;
+      color:white;
+      padding:10px 20px;
+      border:none;
+      margin-top:10px;
+      cursor:pointer;
+      border-radius:8px;
+      transition: 0.2s;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      background: #ff8533;
+    }
+
+    .container {
+      display:flex;
+      height:100vh;
+    }
+
+    .sidebar {
+      width:220px;
+      background:#222;
+      color:white;
+      padding:20px;
+    }
+
+    .sidebar h3 {
+      margin-bottom:20px;
+    }
+
+    .menu-item {
+      padding:10px;
+      cursor:pointer;
+      border-radius:6px;
+      margin-bottom:5px;
+    }
+
+    .menu-item:hover {
+      background:#444;
+    }
+
+    .main {
+      flex:1;
+      padding:20px;
+    }
+
+    .card {
+      background:white;
+      padding:15px;
+      border-radius:10px;
+      margin-bottom:10px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .row {
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    input {
+      padding:10px;
+      width:250px;
+      margin-bottom:10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head> 
+
+<body>
+
+<div id="root"></div>
+
+<script type="text/babel">
+
+function App() {
+  const [page, setPage] = React.useState("splash");
+  const [cart, setCart] = React.useState([]);
+  const [user, setUser] = React.useState(null);
+  const [orders, setOrders] = React.useState([]);
+
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [name, setName] = React.useState("");
+  React.useEffect(() => {
+  const savedUser = JSON.parse(localStorage.getItem("user"));
+
+  if (savedUser) {
+    setUser(savedUser.name);
+  }
+}, []);
+
+  const menu = [
+    { id:1, name:"Chicken Burger", price:120 },
+    { id:2, name:"Pizza", price:180 },
+    { id:3, name:"Fries", price:80 },
+    { id:4, name:"Coke", price:50 },
+  ];
+
+  const addToCart = (item) => {
+    const existing = cart.find(c => c.id === item.id);
+    if (existing) {
+      setCart(cart.map(c => c.id === item.id ? { ...c, qty: (c.qty || 1) + 1 } : c));
+    } else {
+      setCart([...cart, { ...item, qty: 1 }]);
+    }
+  };
+
+  const removeCart = (index) => {
+    setCart(cart.filter((_, i) => i !== index));
+  };
+
+
+const handleLogin = () => {
+  if (!email || !password) {
+    alert("Please fill up all fields");
+    return;
+  }
+
+  const savedUser = JSON.parse(localStorage.getItem("user"));
+
+  if (
+    savedUser &&
+    savedUser.email === email &&
+    savedUser.password === password
+  ) {
+    setUser(savedUser.name);
+    setPage("menu");
+  } else {
+    alert("Invalid Email or Password");
+  }
+};
+
+const handleRegister = () => {
+  if (!name || !email || !password) {
+    alert("Please fill up all fields");
+    return;
+  }
+
+  localStorage.setItem(
+    "user",
+    JSON.stringify({
+      name,
+      email,
+      password
+    })
+  );
+
+  alert("Registration Successful!");
+  setPage("login");
+};
+  // SPLASH
+  if(page==="splash"){
+    return (
+      <div className="center">
+        <h1>🍔 Mini Food Ordering System</h1>
+        <button className="btn" onClick={()=>setPage("login")}>Get Started</button>
+      </div>
+    );
+  }
+
+  // LOGIN
+  if(page==="login"){
+    return (
+      <div className="center">
+        <h2>Login</h2>
+        <input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+        <input placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+        <button className="btn" onClick={handleLogin}>Login</button>
+        <p onClick={()=>setPage("register")} style={{cursor:"pointer", color:"blue", textDecoration:"underline"}}>Create account</p>
+      </div>
+    );
+  }
+
+  // REGISTER
+  if(page==="register"){
+    return (
+      <div className="center">
+        <h2>Create Account</h2>
+        <input placeholder="Name" value={name} onChange={(e) => setName(e.target.value)}/>
+        <input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+        <input placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+        <button className="btn" onClick={handleRegister}>Register</button>
+        <p onClick={()=>setPage("login")} style={{cursor:"pointer", color:"blue", textDecoration:"underline"}}>Back to Login</p>
+      </div>
+    );
+  }
+
+  // MAIN LAYOUT
+  return (
+    <div className="container">
+
+      {/* SIDEBAR */}
+      <div className="sidebar">
+        <h3>Mini Food</h3>
+        <div className="menu-item" onClick={()=>setPage("menu")}>Menu</div>
+        <div className="menu-item" onClick={()=>setPage("cart")}>Cart ({cart.reduce((sum, item) => sum + (item.qty || 1), 0)})</div>
+        <div className="menu-item" onClick={()=>setPage("orders")}>Orders</div>
+        <div className="menu-item" onClick={()=>setPage("profile")}>Profile</div>
+        <div lassName="menu-item"onClick={() => {setUser(null);setEmail("");setPassword("");setPage("login");}}> Logout</div>
+      </div>
+    
+      {/* MAIN */}
+      <div className="main">
+        {/* MENU */}
+        {page==="menu" && (
+          <>
+            <h2>Our Menu</h2>
+            <div className="row">
+              {menu.map(item=>(
+                <div className="card" key={item.id}>
+                  <div>
+                    <b>{item.name}</b>
+                    <p>₱{item.price}</p>
+                  </div>
+                  <button className="btn" onClick={()=>addToCart(item)}>Add</button>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+          
+        {/* CART */}
+        {page==="cart" && (
+          <>
+            <h2>My Cart</h2>
+            {cart.length === 0 && <p>Your cart is empty.</p>}
+            {cart.map((c,i)=>(
+              <div className="card" key={i}>
+                <span>{c.name} (x{c.qty || 1}) - ₱{c.price * (c.qty || 1)}</span>
+                <button className="btn" onClick={()=>removeCart(i)}>Remove</button>
+              </div>
+            ))}
+            <h3>
+              Total: ₱{cart.reduce((a,b)=>a + b.price * (b.qty || 1), 0)}
+            </h3>
+            {cart.length > 0 && (
+              <button className="btn" onClick={() => {
+                setOrders([...orders, { id: Date.now(), items: cart }]);
+                setCart([]);
+                alert("Order placed successfully!");
+              }}>
+                Checkout
+              </button>
+            )}
+          </>
+        )}
+        {/* ORDERS */}
+        {page==="orders" && (
+          <>
+            <h2>My Orders</h2>
+            {orders.length === 0 && <p>No orders yet.</p>}
+            {orders.map(order => (
+              <div className="card" key={order.id}>
+                <div>
+                  <b>Order #{order.id}</b>
+                  <p>Items: {order.items.map(i => `${i.name} (x${i.qty || 1})`).join(", ")}</p>
+                </div>
+              </div>
+            ))}
+          </>
+        )}
+        {/* PROFILE */}
+        {page==="profile" && (
+          <>
+            <h2>Profile</h2>
+            <div className="card">
+              <div>
+                <h3>{user ? user : "Guest User"}</h3>
+                <p>sosa pogi</p>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+
+</body>
+</html>
